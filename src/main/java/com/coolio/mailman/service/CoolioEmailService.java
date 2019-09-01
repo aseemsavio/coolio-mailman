@@ -8,6 +8,7 @@ import freemarker.template.Template;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -27,10 +28,25 @@ import java.util.Map;
 public class CoolioEmailService {
 
     Logger log = LoggerFactory.getLogger(CoolioEmailService.class);
+
     @Autowired
     private JavaMailSender javaMailSender;
     @Autowired
     private Configuration configuration;
+
+    @Value("${spring.mail.username}")
+    private String emailId;
+
+    @Value("${spring.mail.password}")
+    private String password;
+
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 
     public CoolioMailResponse sendPostCreatedEmail(CoolioMail mail, Map<String, Object> model) {
         CoolioMailResponse coolioMailResponse = new CoolioMailResponse();
@@ -56,8 +72,7 @@ public class CoolioEmailService {
         } catch (Exception e) {
             coolioMailResponse.setMessage("Post Creation Email to: " + mail.getToAddress() + " FAILED");
             coolioMailResponse.setStatus(CoolioConstants.BOOLEAN_FAILURE);
-            log.info("Post Creation Email to: " + mail.getToAddress() + " FAILED");
-            log.error("Post Creation Exception failed as: " + e);
+            log.error("Post Creation Email to: " + mail.getToAddress() + " FAILED" + e);
         }
         return coolioMailResponse;
     }
