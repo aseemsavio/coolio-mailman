@@ -1,6 +1,6 @@
 package com.coolio.mailman.controller;
 
-import com.coolio.mailman.bo.CoolioMail;
+import com.coolio.mailman.bo.PostCreationEmailPayload;
 import com.coolio.mailman.bo.CoolioMailResponse;
 import com.coolio.mailman.service.CoolioEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class CoolioEmailController {
     CoolioEmailService coolioEmailService;
 
     @PostMapping("/sendPostCreationEmail")
-    public CoolioMailResponse sendPostCreationEmail(@RequestBody CoolioMail mail) {
+    public CoolioMailResponse sendPostCreationEmail(@RequestBody PostCreationEmailPayload mail) {
         Map<String, Object> model = new HashMap<>();
         model.put("name", mail.getName());
         return coolioEmailService.sendPostCreatedEmail(mail, model);

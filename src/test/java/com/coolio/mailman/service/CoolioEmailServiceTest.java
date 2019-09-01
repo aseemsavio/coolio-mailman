@@ -1,6 +1,6 @@
 package com.coolio.mailman.service;
 
-import com.coolio.mailman.bo.CoolioMail;
+import com.coolio.mailman.bo.PostCreationEmailPayload;
 import com.coolio.mailman.bo.CoolioMailResponse;
 import org.junit.Assert;
 import org.junit.Test;
@@ -26,23 +26,23 @@ public class CoolioEmailServiceTest {
     @Autowired
     CoolioEmailService coolioEmailService;
 
-    private CoolioMail gimmeCoolioMail() {
-        CoolioMail coolioMail = new CoolioMail();
-        coolioMail.setName("Aseem");
-        coolioMail.setFromAddress(coolioEmailService.getEmailId());
-        coolioMail.setToAddress("aseemsavio@gmail.com");
-        coolioMail.setSubject("my subject");
-        return coolioMail;
+    private PostCreationEmailPayload gimmeCoolioMail() {
+        PostCreationEmailPayload postCreationEmailPayload = new PostCreationEmailPayload();
+        postCreationEmailPayload.setName("Aseem");
+        postCreationEmailPayload.setFromAddress(coolioEmailService.getEmailId());
+        postCreationEmailPayload.setToAddress("aseemsavio@gmail.com");
+        postCreationEmailPayload.setSubject("my subject");
+        return postCreationEmailPayload;
     }
 
     @Test
     public void sendPostCreatedEmailTest(){
-        CoolioMail coolioMail = gimmeCoolioMail();
+        PostCreationEmailPayload postCreationEmailPayload = gimmeCoolioMail();
         Map<String, Object> model = new HashMap<>();
-        model.put("name", coolioMail.getName());
+        model.put("name", postCreationEmailPayload.getName());
 
-        System.out.println(coolioMail.getName() + coolioMail.getFromAddress() + coolioEmailService.getEmailId() + coolioEmailService.getPassword());
-        CoolioMailResponse coolioMailResponse = coolioEmailService.sendPostCreatedEmail(coolioMail, model);
+        System.out.println(postCreationEmailPayload.getName() + postCreationEmailPayload.getFromAddress() + coolioEmailService.getEmailId() + coolioEmailService.getPassword());
+        CoolioMailResponse coolioMailResponse = coolioEmailService.sendPostCreatedEmail(postCreationEmailPayload, model);
         Assert.assertEquals(coolioMailResponse.getMessage(), "Post Creation Email to: savio@gmail.com SUCCESSFUL");
         Assert.assertTrue(coolioMailResponse.isStatus());
     }

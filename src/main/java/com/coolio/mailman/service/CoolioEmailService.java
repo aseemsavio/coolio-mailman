@@ -1,7 +1,7 @@
 package com.coolio.mailman.service;
 
 import com.coolio.mailman.bo.CoolioConstants;
-import com.coolio.mailman.bo.CoolioMail;
+import com.coolio.mailman.bo.PostCreationEmailPayload;
 import com.coolio.mailman.bo.CoolioMailResponse;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -48,7 +48,7 @@ public class CoolioEmailService {
         return password;
     }
 
-    public CoolioMailResponse sendPostCreatedEmail(CoolioMail mail, Map<String, Object> model) {
+    public CoolioMailResponse sendPostCreatedEmail(PostCreationEmailPayload mail, Map<String, Object> model) {
         CoolioMailResponse coolioMailResponse = new CoolioMailResponse();
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
