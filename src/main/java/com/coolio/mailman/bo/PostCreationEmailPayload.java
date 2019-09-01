@@ -5,21 +5,21 @@ package com.coolio.mailman.bo;
  *
  * This class is a POJO for a basic Coolio Email.
  */
-public class CoolioMail {
+public class PostCreationEmailPayload {
 
     private String name;
     private String fromAddress;
     private String toAddress;
     private String subject;
 
-    public CoolioMail(String name, String fromAddress, String toAddress, String subject) {
+    public PostCreationEmailPayload(String name, String fromAddress, String toAddress, String subject) {
         this.name = name;
         this.fromAddress = fromAddress;
         this.toAddress = toAddress;
         this.subject = subject;
     }
 
-    public CoolioMail() {
+    public PostCreationEmailPayload() {
     }
 
     public String getName() {
@@ -56,7 +56,7 @@ public class CoolioMail {
 
     @Override
     public String toString() {
-        return "CoolioMail{" +
+        return "PostCreationEmailPayload{" +
                 "name='" + name + '\'' +
                 ", fromAddress='" + fromAddress + '\'' +
                 ", toAddress='" + toAddress + '\'' +

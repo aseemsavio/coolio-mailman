@@ -6,7 +6,7 @@ import org.junit.Test;
 /**
  * @author Aseem Savio
  */
-public class CoolioMailResponseTest {
+public class PostCreationEmailPayloadResponseTest {
 
     private CoolioMailResponse gimmeEmptyConstructor(){
         return new CoolioMailResponse();
