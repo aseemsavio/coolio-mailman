@@ -4,6 +4,7 @@ import com.coolio.mailman.bo.PostCreationEmailPayload;
 import com.coolio.mailman.bo.CoolioMailResponse;
 import com.coolio.mailman.service.CoolioEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +29,11 @@ public class CoolioEmailController {
         Map<String, Object> model = new HashMap<>();
         model.put("name", mail.getName());
         return coolioEmailService.sendPostCreatedEmail(mail, model);
+    }
 
+    @GetMapping("/all/lub")
+    public String healthCheck(){
+        return "dub";
     }
 
 }
