@@ -27,7 +27,7 @@ import java.util.Map;
 @Service
 public class CoolioEmailService {
 
-    Logger log = LoggerFactory.getLogger(CoolioEmailService.class);
+    public Logger log = LoggerFactory.getLogger(CoolioEmailService.class);
 
     @Autowired
     private JavaMailSender javaMailSender;
