@@ -3,6 +3,7 @@ package com.coolio.mailman.service;
 import com.coolio.mailman.bo.CoolioConstants;
 import com.coolio.mailman.bo.PostCreationEmailPayload;
 import com.coolio.mailman.bo.CoolioMailResponse;
+import com.coolio.mailman.bo.ServiceFailureEmailPayload;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import org.slf4j.Logger;
@@ -48,32 +49,39 @@ public class CoolioEmailService {
         return password;
     }
 
-    public CoolioMailResponse sendPostCreatedEmail(PostCreationEmailPayload mail, Map<String, Object> model) {
-        CoolioMailResponse coolioMailResponse = new CoolioMailResponse();
-        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+    public CoolioMailResponse sendPostCreatedEmail(PostCreationEmailPayload postCreationEmailPayload, Map<String, Object> model) {
+        return constructEmail("postCreationEmailTemplate.ftl", postCreationEmailPayload.getFromAddress(), postCreationEmailPayload.getToAddress(), postCreationEmailPayload.getSubject(), model);
+    }
 
+    public CoolioMailResponse sendServiceFailureEmail(ServiceFailureEmailPayload serviceFailureEmailPayload, Map<String, Object> model) {
+        return constructEmail("serviceFailedEmailTemplate.ftl", serviceFailureEmailPayload.getFrom(), serviceFailureEmailPayload.getTo(), serviceFailureEmailPayload.getSubject(), model);
+    }
+
+    protected CoolioMailResponse constructEmail(String templateName, String from, String to, String subject, Map<String, Object> model) {
+        CoolioMailResponse coolioMailResponse = new CoolioMailResponse();
         try {
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
 
-            // Adding attachments if needed. Commented out as there is no need for attachments here.
-            //mimeMessageHelper.addAttachment("aseem.png", new ClassPathResource("aseem.png"));
-
-            Template template = configuration.getTemplate("postCreationEmailTemplate.ftl");
+            Template template = configuration.getTemplate(templateName);
             String stringTemplate = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
-            mimeMessageHelper.setTo(mail.getToAddress());
+            mimeMessageHelper.setTo(to);
             mimeMessageHelper.setText(stringTemplate, true);
-            mimeMessageHelper.setSubject(mail.getSubject());
-            mimeMessageHelper.setFrom(mail.getFromAddress());
+            mimeMessageHelper.setSubject(subject);
+            mimeMessageHelper.setFrom(from);
             javaMailSender.send(mimeMessage);
 
-            coolioMailResponse.setMessage("Post Creation Email to: " + mail.getToAddress() + " SUCCESSFUL");
+            coolioMailResponse.setMessage("Email to: " + to + " SUCCESSFUL");
             coolioMailResponse.setStatus(CoolioConstants.BOOLEAN_SUCCESS);
-            log.info("Post Creation Email to: " + mail.getToAddress() + " SUCCESSFUL");
+            log.info("Email to: " + to + " SUCCESSFUL");
+            return coolioMailResponse;
         } catch (Exception e) {
-            coolioMailResponse.setMessage("Post Creation Email to: " + mail.getToAddress() + " FAILED");
+            coolioMailResponse.setMessage("Email to: " + to + " FAILED");
             coolioMailResponse.setStatus(CoolioConstants.BOOLEAN_FAILURE);
-            log.error("Post Creation Email to: " + mail.getToAddress() + " FAILED" + e);
+            log.error("Email to: " + to + " FAILED" + e);
+            return coolioMailResponse;
         }
-        return coolioMailResponse;
     }
+
+
 }
