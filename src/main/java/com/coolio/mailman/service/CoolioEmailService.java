@@ -10,13 +10,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+import org.springframework.web.client.RestTemplate;
 
 import javax.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -31,9 +34,16 @@ public class CoolioEmailService {
     public Logger log = LoggerFactory.getLogger(CoolioEmailService.class);
 
     @Autowired
+    RestTemplateBuilder restTemplateBuilder;
+
+    @Autowired
     private JavaMailSender javaMailSender;
+
     @Autowired
     private Configuration configuration;
+
+    @Value("${coolio.godfather.url}")
+    private String godFatherServiceURL;
 
     @Value("${spring.mail.username}")
     private String emailId;
@@ -84,4 +94,27 @@ public class CoolioEmailService {
     }
 
 
+    public void scheduledHealthCheck() {
+        if (!callService(godFatherServiceURL).equals("1")) {
+            log.error("coolio-godfather" + " has failed in production.");
+            Map<String, Object> model = new HashMap<>();
+            model.put("name", "Aseem");
+            model.put("filler", "service has");
+            model.put("list", "coolio-godfather");
+            constructEmail("serviceFailedEmailTemplate.ftl", emailId, "aseemsavio3@gmail.com", "IMPORTANT: Production Failure", model);
+            log.info("Email to aseemsavio3@gmail.com successful.");
+        }
+    }
+
+    protected String callService(String url) {
+        RestTemplate restTemplate = restTemplateBuilder.build();
+        String URI = url + "/all/lub";
+        String response = "";
+        try {
+            response = restTemplate.getForObject(URI, String.class);
+        } catch (Exception e) {
+            return "0";
+        }
+        return response.equalsIgnoreCase("dub") ? "1" : "0";
+    }
 }
