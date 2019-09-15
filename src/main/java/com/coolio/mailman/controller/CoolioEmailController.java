@@ -5,6 +5,7 @@ import com.coolio.mailman.bo.CoolioMailResponse;
 import com.coolio.mailman.bo.ServiceFailureEmailPayload;
 import com.coolio.mailman.service.CoolioEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,8 +54,9 @@ public class CoolioEmailController {
         return "dub";
     }
 
+    @Scheduled(cron = "0 0/15 * * * *")
     public void lifeLineGodFatherService() {
-
+        coolioEmailService.scheduledHealthCheck();
     }
 
 }
