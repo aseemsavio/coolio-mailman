@@ -8,7 +8,7 @@ import org.junit.Test;
  */
 public class PostCreationEmailPayloadResponseTest {
 
-    private CoolioMailResponse gimmeEmptyConstructor(){
+ /*   private CoolioMailResponse gimmeEmptyConstructor(){
         return new CoolioMailResponse();
     }
 
@@ -34,6 +34,6 @@ public class PostCreationEmailPayloadResponseTest {
         CoolioMailResponse coolioMailResponse = gimmeSettedCoolioMailResponse();
         Assert.assertEquals(coolioMailResponse.getMessage(), "message");
         Assert.assertTrue(coolioMailResponse.isStatus());
-    }
+    }*/
 
 }
