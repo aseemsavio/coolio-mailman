@@ -4,6 +4,7 @@ import com.coolio.mailman.bo.CoolioConstants;
 import com.coolio.mailman.bo.PostCreationEmailPayload;
 import com.coolio.mailman.bo.CoolioMailResponse;
 import com.coolio.mailman.bo.ServiceFailureEmailPayload;
+import com.coolio.mailman.bo.thirdparty.NewMessageAlert;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import org.slf4j.Logger;
@@ -67,6 +68,10 @@ public class CoolioEmailService {
         return constructEmail("serviceFailedEmailTemplate.ftl", serviceFailureEmailPayload.getFrom(), serviceFailureEmailPayload.getTo(), serviceFailureEmailPayload.getSubject(), model);
     }
 
+    public CoolioMailResponse sendAlertEmailForNewMessageForAseemSite(NewMessageAlert mail, Map<String, Object> model) {
+        return constructEmail("newMessageAlertForAseemSavioDotCom.ftl", mail.getFrom(), mail.getTo(), mail.getSubject(), model);
+    }
+
     protected CoolioMailResponse constructEmail(String templateName, String from, String to, String subject, Map<String, Object> model) {
         CoolioMailResponse coolioMailResponse = new CoolioMailResponse();
         try {
@@ -117,4 +122,9 @@ public class CoolioEmailService {
         }
         return response.equalsIgnoreCase("dub") ? "1" : "0";
     }
+
+    public boolean isNullOrEmpty(String value) {
+        return (value == null || value.isEmpty() || value.equals(""));
+    }
+
 }

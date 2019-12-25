@@ -9,13 +9,14 @@ import org.junit.Test;
 
 public class PostCreationEmailPayloadTest {
 
-    private PostCreationEmailPayload gimmePopulatedConstructor() {
+ /*   private PostCreationEmailPayload gimmePopulatedConstructor() {
         return new PostCreationEmailPayload("Aseem", "aseem@gmail.com", "savio@gmail.com", "my subject");
     }
 
     private PostCreationEmailPayload gimmeEmptyConstructor() {
         return new PostCreationEmailPayload();
     }
+
 
     private PostCreationEmailPayload gimmeSettedCoolioMail() {
         PostCreationEmailPayload postCreationEmailPayload = new PostCreationEmailPayload();
@@ -42,5 +43,5 @@ public class PostCreationEmailPayloadTest {
         Assert.assertEquals(postCreationEmailPayload.getSubject(), "my subject");
     }
 
-
+*/
 }
